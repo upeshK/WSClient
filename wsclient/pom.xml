@@ -11,13 +11,70 @@
     <properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-
+        <maven.compiler.source>1.7</maven.compiler.source>
+        <maven.compiler.target>1.7</maven.compiler.target> 
 		<mule.version>3.6.1</mule.version>
     	<mule.tools.version>1.1</mule.tools.version>
 	</properties>
 
+	<scm>
+		<connection>scm:git:https://github.com/upeshK/WSClient.git</connection>
+		<url>scm:git:https://github.com/upeshK/WSClient.git</url>
+		<developerConnection>scm:git:https://github.com/upeshK/WSClient.git</developerConnection>
+		
+		<tag>v1.0.1</tag>
+	</scm>
+	
+	<distributionManagement>
+		<repository>
+			<id>github-releases</id>
+			<name>Github Releases</name>
+			<url>https://github.com/upeshK/WSClient/releases</url>
+		</repository>
+	</distributionManagement>
+	
+	<profiles>
+		<profile>
+			<id>releases</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.sonatype.plugins</groupId>
+						<artifactId>nexus-staging-maven-plugin</artifactId>
+						<version>1.5.1</version>
+						<executions>
+							<execution>
+								<id>default-deploy</id>
+								<phase>deploy</phase>
+								<goals>
+									<goal>deploy</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<serverId>github-releases</serverId>
+							<nexusUrl>https://github.com/upeshK/WSClient</nexusUrl>
+							<skipStaging>true</skipStaging>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+	
 	<build>
 		<plugins>
+		
+			<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-release-plugin</artifactId>
+					<version>2.5.1</version>
+					<configuration>
+						<!--<pushChanges>false</pushChanges> -->
+						<releaseProfiles>releases</releaseProfiles>
+						 <tagNameFormat>v@{project.version}</tagNameFormat>
+					</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.mule.tools.maven</groupId>
 				<artifactId>mule-app-maven-plugin</artifactId>
@@ -62,6 +119,15 @@
 						</configuration>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.3</version>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
