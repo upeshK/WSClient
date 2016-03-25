@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.mycompany</groupId>
 	<artifactId>wsclient</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2-SNAPSHOT</version>
     <packaging>mule</packaging>
 	<name>Mule wsclient Application</name>
 
@@ -22,7 +22,7 @@
 		<url>scm:git:https://github.com/upeshK/WSClient.git</url>
 		<developerConnection>scm:git:https://github.com/upeshK/WSClient.git</developerConnection>
 		
-		<tag>v1.0.2</tag>
+		<tag>v1.0.1</tag>
 	</scm>
 	
 	<distributionManagement>
