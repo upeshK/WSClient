@@ -29,7 +29,7 @@
 		<repository>
 			<id>github-releases</id>
 			<name>Github Releases</name>
-			<url>https://github.com/upeshK/WSClient/releases</url>
+			<url>https://github.com/upeshK/WSClient.git</url>
 		</repository>
 	</distributionManagement>
 	
@@ -53,7 +53,7 @@
 						</executions>
 						<configuration>
 							<serverId>github-releases</serverId>
-							<nexusUrl>https://github.com/upeshK/WSClient</nexusUrl>
+							<nexusUrl>https://github.com/upeshK/WSClient.git</nexusUrl>
 							<skipStaging>true</skipStaging>
 						</configuration>
 					</plugin>
