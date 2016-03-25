@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:mulexml="http://www.mulesoft.org/schema/mule/xml" xmlns:metadata="http://www.mulesoft.org/schema/mule/metadata" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:cxf="http://www.mulesoft.org/schema/mule/cxf" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/cxf http://www.mulesoft.org/schema/mule/cxf/current/mule-cxf.xsd
+http://www.mulesoft.org/schema/mule/xml http://www.mulesoft.org/schema/mule/xml/current/mule-xml.xsd">
+    <http:listener-config name="HTTP_Listener_Configuration" host="0.0.0.0" port="8082" basePath="testService" doc:name="HTTP Listener Configuration"/>
+    <!-- <http:request-config name="HTTP_Request_Configuration" host="http://ws.cdyne.com/ip2geo/ip2geo.asmx" doc:name="HTTP Request Configuration" port="8080"/> -->
+    <mulexml:jaxb-context name="JAXB_Context" packageNames="test" doc:name="JAXB Context"/>
+    <spring:beans>
+        <spring:bean id="OutInteceptor" name="OutInteceptor" class="org.apache.cxf.interceptor.LoggingOutInterceptor" scope="prototype"/> 
+     
+        
+    </spring:beans>
+    <flow name="wsclientFlow">
+        <http:listener config-ref="HTTP_Listener_Configuration" path="/test" doc:name="HTTP"/>
+        <response>
+            <logger message="Response &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;#[payload]" level="INFO" doc:name="Logger"/>
+        </response>
+        <!-- <byte-array-to-string-transformer doc:name="Byte Array to String"/> -->
+        <!--  <component class="com.transeformer.ReqMapper" doc:name="Java"/> -->
+        <logger message="Request &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;#[payload]" level="INFO" doc:name="Logger"/>
+        <response>
+            <mulexml:jaxb-object-to-xml-transformer mimeType="application/xml" jaxbContext-ref="JAXB_Context" doc:name="JAXB Object to XML"/>
+        </response>
+       <mulexml:jaxb-xml-to-object-transformer mimeType="application/soap+xml" jaxbContext-ref="JAXB_Context" doc:name="XML to JAXB Object"/>
+        <flow-ref name="WebServiceCall" doc:name="Flow Reference"/>
+       <!--  <http:request config-ref="HTTP_Request_Configuration" path="/" method="POST" doc:name="HTTP"/> -->
+    </flow>
+    <sub-flow name="WebServiceCall">
+        <cxf:jaxws-client operation="ResolveIP" clientClass="test.IP2Geo" port="IP2GeoSoap" soapVersion="1.2" doc:name="CXF">
+            <cxf:inInterceptors>
+                <spring:ref bean="OutInteceptor"/>
+            </cxf:inInterceptors>
+            <cxf:outInterceptors>
+                <spring:ref bean="OutInteceptor"/>
+            </cxf:outInterceptors>
+        </cxf:jaxws-client>
+        <logger message="REq &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; #[message.payloadAs(java.lang.String)]" level="INFO" doc:name="Logger"/>
+        <logger message="SOAPRE &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;#[payload]" level="INFO" doc:name="Logger"/>
+        <http:outbound-endpoint exchange-pattern="request-response" method="POST" address="http://ws.cdyne.com/ip2geo/ip2geo.asmx" encoding="UTF-8" contentType="application/soap+xml" doc:name="HTTP">
+            <set-property propertyName="SOAPAction" value="http://ws.cdyne.com/ResolveIP" doc:name="SOAPAction"/>
+        </http:outbound-endpoint>
+        
+        <byte-array-to-string-transformer encoding="UTF-8" mimeType="application/x-compressed" doc:name="Byte Array to String"/>
+    </sub-flow>
+</mule>
