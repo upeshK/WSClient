@@ -29,13 +29,13 @@
 		<repository>
 			<id>github-releases</id>
 			<name>Github Releases</name>
-			<url>https://github.com/upeshK/WSClient.git</url>
+			<url>https://bintray.com/upeshk/releases</url>
 		</repository>
 	</distributionManagement>
 	
 	<profiles>
 		<profile>
-			<id>releases</id>
+			<id>releases1</id>
 			<build>
 				<plugins>
 					<plugin>
@@ -53,13 +53,42 @@
 						</executions>
 						<configuration>
 							<serverId>github-releases</serverId>
-							<nexusUrl>https://github.com/upeshK/WSClient.git</nexusUrl>
+							<nexusUrl>https://bintray.com/upeshk/releases</nexusUrl>
 							<skipStaging>true</skipStaging>
 						</configuration>
 					</plugin>
 				</plugins>
 			</build>
 		</profile>
+		<profile>
+    <id>release</id>
+    <build>
+      <plugins>
+        <plugin>
+          <artifactId>maven-source-plugin</artifactId>
+          <executions>
+            <execution>
+              <id>attach-sources</id>
+              <goals>
+                <goal>jar</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <executions>
+            <execution>
+              <id>attach-javadocs</id>
+              <goals>
+                <goal>jar</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
+    </build>
+  </profile>
 	</profiles>
 	
 	<build>
@@ -71,7 +100,7 @@
 					<version>2.5.1</version>
 					<configuration>
 						<!--<pushChanges>false</pushChanges> -->
-						<releaseProfiles>releases</releaseProfiles>
+						<releaseProfiles>release</releaseProfiles>
 						 <tagNameFormat>v@{project.version}</tagNameFormat>
 					</configuration>
 			</plugin>
