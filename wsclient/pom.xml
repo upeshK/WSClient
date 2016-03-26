@@ -29,7 +29,7 @@
 		<repository>
 			<id>github-releases</id>
 			<name>Github Releases</name>
-			 <url>https://api.bintray.com/maven/upeshk/releases/test/;publish=1</url>
+			 <url>https://api.bintray.com/maven/upeshk/releases/;publish=1</url>
 			<!-- <url>http://dl.bintray.com/upeshk/releases</url> -->
 		</repository>
 	</distributionManagement>
