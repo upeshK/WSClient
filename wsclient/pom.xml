@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.mycompany</groupId>
 	<artifactId>wsclient</artifactId>
-    <version>1.0.4-SNAPSHOT</version>
+    <version>1.0.5-SNAPSHOT</version>
     <packaging>mule</packaging>
 	<name>Mule wsclient Application</name>
 
@@ -29,11 +29,11 @@
 		<repository>
 			<id>github-releases</id>
 			<name>Github Releases</name>
-			<url>https://bintray.com/upeshk/releases</url>
+			<url>http://dl.bintray.com/upeshk/releases</url>
 		</repository>
 	</distributionManagement>
 	
-	<profiles>
+	<!-- <profiles>
 		<profile>
 			<id>releases1</id>
 			<build>
@@ -89,7 +89,7 @@
       </plugins>
     </build>
   </profile>
-	</profiles>
+	</profiles> -->
 	
 	<build>
 		<plugins>
@@ -100,7 +100,7 @@
 					<version>2.5.1</version>
 					<configuration>
 						<!--<pushChanges>false</pushChanges> -->
-						<releaseProfiles>release</releaseProfiles>
+						<releaseProfiles>bintray</releaseProfiles>
 						 <tagNameFormat>v@{project.version}</tagNameFormat>
 					</configuration>
 			</plugin>
